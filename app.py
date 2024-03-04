@@ -3,6 +3,7 @@ from aiogram import Bot, Dispatcher, types
 
 from data.config import BOT_TOKEN
 from handlers.users.start import user_start_router
+from handlers.users.user_communicate import user_communicate_router
 from handlers.users.user_main import user_main_router
 from utils.set_bot_commands import private
 
@@ -13,6 +14,7 @@ dp = Dispatcher()
 
 dp.include_router(user_start_router)
 dp.include_router(user_main_router)
+dp.include_router(user_communicate_router)
 
 
 async def main():

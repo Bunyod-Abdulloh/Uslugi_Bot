@@ -10,7 +10,7 @@ user_main_router.message.filter(ChatTypeFilter(['private']))
 async def communicate_to_specialist(message: types.Message):
     await message.answer(
         text="Mutaxassis turini tanlang",
-        reply_markup=user_select_doctors_ibutton().as_markup()
+        reply_markup=user_select_doctors_ibutton()
     )
 
 
