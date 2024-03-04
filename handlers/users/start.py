@@ -1,9 +1,14 @@
 from aiogram import types, Router
 from aiogram.filters import CommandStart
 
+from keyboards.default import user_main_default_button
+
 user_start_router = Router()
 
 
 @user_start_router.message(CommandStart())
 async def start_cmd(message: types.Message):
-    await message.answer('Klinika botimizga xush kelibsiz!')
+    await message.answer(
+        text='Klinika botimizga xush kelibsiz!',
+        reply_markup=user_main_default_button
+    )
