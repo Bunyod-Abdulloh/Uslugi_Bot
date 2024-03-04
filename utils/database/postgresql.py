@@ -100,8 +100,7 @@ class Database:
     async def create_table_users(self):
         sql = """
         CREATE TABLE IF NOT EXISTS Users (
-        id SERIAL PRIMARY KEY,
-        created_at DATE DEFAULT CURRENT_NOW(),
+        id SERIAL PRIMARY KEY,        
         telegram_id BIGINT NOT NULL UNIQUE,
         username VARCHAR(50) NULL,
         fullname VARCHAR(50) NULL,
@@ -110,7 +109,9 @@ class Database:
         gender VARCHAR(20) NULL,
         age INTEGER NULL,
         latitude FLOAT NULL,
-        longitude FLOAT NULL        
+        longitude FLOAT NULL,
+        get_doctor TEXT NULL,
+        complaint VARCHAR(4000) NULL        
         );
         """
         await self.execute(sql, execute=True)
@@ -122,9 +123,9 @@ class Database:
         )
         return sql, tuple(parameters.values())
 
-    async def add_user(self, telegram_id):
-        sql = "INSERT INTO Users (telegram_id) VALUES($1) returning *"
-        return await self.execute(sql, telegram_id, fetchrow=True)
+    async def add_complaint_user(self, telegram_id, get_doctor):
+        sql = "INSERT INTO Users (telegram_id, get_doctor) VALUES($1, $2) returning *"
+        return await self.execute(sql, telegram_id, get_doctor, fetchrow=True)
 
     async def select_all_users(self):
         sql = "SELECT * FROM Users"

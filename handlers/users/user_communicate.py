@@ -1,6 +1,7 @@
 from aiogram import Router, F, types
 from aiogram.fsm.context import FSMContext
 
+from loader import db
 from states.user_states import UserCommunicate
 
 user_communicate_router = Router()
@@ -10,9 +11,12 @@ user_communicate_router = Router()
 async def communicate_one(call: types.CallbackQuery, state: FSMContext):
     specialist = call.data.split("_")[1]
     await state.update_data(
-        get_specialist=specialist
+        get_doctor=specialist
     )
-    await call.message.answer(
+    await db.add_complaint_user(
+        telegram_id=call.from_user.id, get_doctor=specialist
+    )
+    await call.message.edit_text(
         text="Shikoyatingizni kiriting"
     )
     await state.set_state(UserCommunicate.complaint)

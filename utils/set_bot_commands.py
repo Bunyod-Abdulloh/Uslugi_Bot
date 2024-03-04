@@ -1,5 +1,11 @@
-from aiogram import types
+from aiogram import Bot
+from aiogram.methods.set_my_commands import BotCommand
+from aiogram.types import BotCommandScopeAllPrivateChats
 
-private = [
-    types.BotCommand(command="start", description="Botni ishga tushurish")
-]
+
+async def set_default_commands(bot: Bot):
+    commands = [
+        BotCommand(command="/start", description="Botni ishga tushirish"),
+        BotCommand(command="/help", description="Yordam"),
+    ]
+    await bot.set_my_commands(commands=commands, scope=BotCommandScopeAllPrivateChats())
