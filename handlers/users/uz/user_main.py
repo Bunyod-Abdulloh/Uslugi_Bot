@@ -15,7 +15,7 @@ async def communicate_to_specialist(message: types.Message):
             man_text="Erkak shifokor", man_callback="complaintuz_Erkak",
             woman_text="Ayol shifokor", woman_callback="complaintuz_Ayol",
             all_text="Ahamiyati yo'q", all_callback="complaintuz_Ahamiyatsiz",
-            back_text="Ortga", back_callback="back_complaintuz"
+            back_text="Ortga", back_callback="back_mainuz"
         )
     )
 

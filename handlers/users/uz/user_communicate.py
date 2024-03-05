@@ -1,6 +1,7 @@
 from aiogram import Router, F, types
 from aiogram.fsm.context import FSMContext
 
+from keyboards.default.user_default_buttons import user_main_default_button
 from keyboards.inline.user_inline_buttons import user_select_doctors_ibutton, user_send_complaint, \
     select_gender_communicate
 from loader import db
@@ -104,8 +105,8 @@ async def check_complaintuz(call: types.CallbackQuery, state: FSMContext):
 @user_complaint_router.callback_query(F.data == "back_complaintuz")
 async def back_complaintuz(call: types.CallbackQuery, state: FSMContext):
     data = await state.get_data()
-    id_ = data["complaint_id"]
-    if id_:
+    if "complaint_id" in data.keys():
+        id_ = data["complaint_id"]
         await db.delete_complaint_by_id(
             id_=id_
         )
@@ -120,3 +121,14 @@ async def back_complaintuz(call: types.CallbackQuery, state: FSMContext):
         )
     )
 
+
+@user_complaint_router.callback_query(F.data == "back_mainuz")
+async def back_mainuz(call: types.CallbackQuery):
+    await call.message.delete()
+    await call.message.answer(
+        text="Bosh sahifa",
+        reply_markup=user_main_default_button(
+            communicate_doctor="Shifokor bilan bog'lanish",
+            search="Qidirish", profile="Shaxsiy kabinet"
+        )
+    )
