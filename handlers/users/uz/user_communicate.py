@@ -105,9 +105,10 @@ async def check_complaintuz(call: types.CallbackQuery, state: FSMContext):
 async def back_complaintuz(call: types.CallbackQuery, state: FSMContext):
     data = await state.get_data()
     id_ = data["complaint_id"]
-    await db.delete_complaint_by_id(
-        id_=id_
-    )
+    if id_:
+        await db.delete_complaint_by_id(
+            id_=id_
+        )
     await state.clear()
     await call.message.edit_text(
         text="Tugmalardan birini tanlang",

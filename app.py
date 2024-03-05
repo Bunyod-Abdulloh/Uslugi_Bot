@@ -8,7 +8,7 @@ from aiogram.fsm.storage.memory import MemoryStorage
 
 from data.config import BOT_TOKEN
 from handlers.users.uz.start import user_start_router
-from handlers.users.uz.user_communicate import user_communicate_router
+from handlers.users.uz.user_communicate import user_complaint_router
 from handlers.users.uz.user_main import user_main_router
 from loader import db
 from middlewares.throttling import ThrottlingMiddleware
@@ -20,7 +20,7 @@ def setup_handlers(dp: Dispatcher) -> None:
     """HANDLERS"""
     dp.include_router(user_start_router)
     dp.include_router(user_main_router)
-    dp.include_router(user_communicate_router)
+    dp.include_router(user_complaint_router)
 
 
 def setup_middlewares(dispatcher: Dispatcher, bot: Bot) -> None:

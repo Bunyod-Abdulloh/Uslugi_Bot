@@ -19,8 +19,6 @@ def user_main_default_button(communicate_doctor: str, search: str, profile: str)
     return buttons
 
 
-#  Klinika bo'yicha qidirish, Shifokor sohasi bo'yicha qidirish Manzil bo'yicha qidirish
-#  Eng yaqin klinikalar ro'yxatini chiqarish Bosh sahifaga qaytish
 def user_search_cbuttons(search_clinic: str, search_doctor: str, search_address: str, nearest_clinics: str,
                          back_main_menu: str):
     buttons = ReplyKeyboardMarkup(
