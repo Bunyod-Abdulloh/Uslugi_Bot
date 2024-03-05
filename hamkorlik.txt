@@ -1,0 +1,4 @@
+1. Handlers/users/uz/user_search 17 - qatorni ko'rish (user klinikalarni qidirish qismini inline mode qilsak qulaymi
+degandim. Yana maslahat qilish kerak)
+
+2. app.py run qilinganda logging chiqarish kerak. Bot start boldi / stop bo'ldi kabi

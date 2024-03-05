@@ -1,9 +1,10 @@
 from aiogram import Router, F, types
 from aiogram.fsm.context import FSMContext
 
-from keyboards.default.user_default_buttons import user_main_default_button
-from keyboards.inline.user_inline_buttons import user_select_doctors_ibutton, user_send_complaint, \
-    select_gender_communicate
+from handlers.users.uz.start import uz_main_keyboard
+from handlers.users.uz.user_main import uz_select_gender_ibuttons
+from keyboards.inline.user_inline_buttons import user_select_doctors_ibutton, user_send_complaint
+
 from loader import db
 from states.user_states import UserCommunicateUz
 
@@ -51,7 +52,7 @@ async def get_complaintuz(message: types.Message, state: FSMContext):
         complaint=message.text, id_=id_
     )
     await message.answer(
-        text="Shikoyatingiz qabul qilindi! Tasdiqlaysizmi?",
+        text="Habaringiz qabul qilindi! Tasdiqlaysizmi?",
         reply_markup=user_send_complaint(
             re_enter_text="Qayta kiritish", re_enter_callback="re_enter_complaintuz",
             check_text="Tasdiqlash", check_callback="check_complaintuz",
@@ -70,12 +71,7 @@ async def complaintuz_re_enter(call: types.CallbackQuery, state: FSMContext):
     await state.clear()
     await call.message.edit_text(
         text="Tugmalardan birini tanlang",
-        reply_markup=select_gender_communicate(
-            man_text="Erkak shifokor", man_callback="complaintuz_Erkak",
-            woman_text="Ayol shifokor", woman_callback="complaintuz_Ayol",
-            all_text="Ahamiyati yo'q", all_callback="complaintuz_Ahamiyatsiz",
-            back_text="Ortga", back_callback="back_complaintuz"
-        )
+        reply_markup=uz_select_gender_ibuttons
     )
 
 
@@ -97,7 +93,7 @@ async def check_complaintuz(call: types.CallbackQuery, state: FSMContext):
     #         f"\nHabar matni: {user['complaint']}")
     # print(text)
     await call.message.edit_text(
-        text="Habaringiz qabul qilindi va shifokorlar guruhiga yuborildi! Onlaynda bo'lgan shifokorlar tez orada "
+        text="Habaringiz shifokorlar guruhiga yuborildi! Onlaynda bo'lgan shifokorlar tez orada "
              "javob yuborishadi!"
     )
 
@@ -113,12 +109,7 @@ async def back_complaintuz(call: types.CallbackQuery, state: FSMContext):
     await state.clear()
     await call.message.edit_text(
         text="Tugmalardan birini tanlang",
-        reply_markup=select_gender_communicate(
-            man_text="Erkak shifokor", man_callback="complaintuz_Erkak",
-            woman_text="Ayol shifokor", woman_callback="complaintuz_Ayol",
-            all_text="Ahamiyati yo'q", all_callback="complaintuz_Ahamiyatsiz",
-            back_text="Ortga", back_callback="back_complaintuz"
-        )
+        reply_markup=uz_select_gender_ibuttons
     )
 
 
@@ -127,8 +118,5 @@ async def back_mainuz(call: types.CallbackQuery):
     await call.message.delete()
     await call.message.answer(
         text="Bosh sahifa",
-        reply_markup=user_main_default_button(
-            communicate_doctor="Shifokor bilan bog'lanish",
-            search="Qidirish", profile="Shaxsiy kabinet"
-        )
+        reply_markup=uz_main_keyboard
     )
