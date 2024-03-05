@@ -1,6 +1,9 @@
 import asyncio
+import logging
+import sys
 
 from aiogram import Dispatcher, Bot, types
+from aiogram.client.default import DefaultBotProperties
 from aiogram.client.session.middlewares.request_logging import logger
 from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
@@ -36,17 +39,18 @@ async def setup_aiogram(dispatcher: Dispatcher, bot: Bot) -> None:
 
 
 async def database_connected():
-    # Ma'lumotlar bazasini yaratamiz:
     await db.create()
     # await db.drop_users()
+    await db.drop_table_complaint()
     await db.create_table_users()
+    await db.create_table_complaint()
 
 
 async def aiogram_on_startup_polling(dispatcher: Dispatcher, bot: Bot) -> None:
     logger.info("Database connected")
     await database_connected()
 
-    logger.info("Starting polling")
+    logger.info(msg="Starting polling")
     await bot.delete_webhook(drop_pending_updates=True)
     await setup_aiogram(bot=bot, dispatcher=dispatcher)
     await on_startup_notify(bot=bot)
@@ -60,7 +64,9 @@ async def aiogram_on_shutdown_polling(dispatcher: Dispatcher, bot: Bot):
 
 
 def main():
-    bot = Bot(token=BOT_TOKEN)
+    # logging.basicConfig(level=logging.INFO)
+    # logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+    bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
     storage = MemoryStorage()
     dispatcher = Dispatcher(storage=storage)
     allowed_updates = ['message', 'callback_query']
