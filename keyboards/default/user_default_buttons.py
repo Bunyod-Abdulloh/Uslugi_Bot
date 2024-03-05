@@ -1,37 +1,45 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
-user_main_default_button = ReplyKeyboardMarkup(
-    keyboard=[
-        [
-            KeyboardButton(text="📱 Shifokor bilan bog'lanish")
+
+def user_main_default_button(communicate_doctor: str, search: str, profile: str):
+    buttons = ReplyKeyboardMarkup(
+        keyboard=[
+            [
+                KeyboardButton(text=f"📱 {communicate_doctor}")
+            ],
+            [
+                KeyboardButton(text=f"🔍 {search}")
+            ],
+            [
+                KeyboardButton(text=f"👤 {profile}")
+            ]
         ],
-        [
-            KeyboardButton(text="🔍 Qidirish")
-        ],
-        [
-            KeyboardButton(text="👤 Shaxsiy kabinet")
+        resize_keyboard=True
+    )
+    return buttons
+
+
+#  Klinika bo'yicha qidirish, Shifokor sohasi bo'yicha qidirish Manzil bo'yicha qidirish
+#  Eng yaqin klinikalar ro'yxatini chiqarish Bosh sahifaga qaytish
+def user_search_cbuttons(search_clinic: str, search_doctor: str, search_address: str, nearest_clinics: str,
+                         back_main_menu: str):
+    buttons = ReplyKeyboardMarkup(
+        keyboard=[
+            [
+                KeyboardButton(text=f"🏥 {search_clinic}")
+            ],
+            [
+                KeyboardButton(text=f"💉 {search_doctor}")
+            ],
+            [
+                KeyboardButton(text=f"📍 {search_address}")
+            ],
+            [
+                KeyboardButton(text=f"🚶‍♂️ {nearest_clinics}")
+            ],
+            [
+                KeyboardButton(text=f"🏡 {back_main_menu}")
+            ],
         ]
-    ],
-    resize_keyboard=True
-)
-
-
-user_search_cbuttons = ReplyKeyboardMarkup(
-    keyboard=[
-        [
-          KeyboardButton(text="🏥 Klinika bo'yicha qidirish")
-        ],
-        [
-          KeyboardButton(text="💉 Shifokor sohasi bo'yicha qidirish")
-        ],
-        [
-            KeyboardButton(text="📍 Manzil bo'yicha qidirish")
-        ],
-        [
-          KeyboardButton(text="🚶‍♂️ Eng yaqin klinikalarni chiqarish")
-        ],
-        [
-          KeyboardButton(text="🏡 Bosh sahifaga qaytish")
-        ],
-    ]
-)
+    )
+    return buttons
