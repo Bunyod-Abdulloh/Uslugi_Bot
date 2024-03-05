@@ -14,8 +14,6 @@ from middlewares.throttling import ThrottlingMiddleware
 from utils.notify_admins import on_startup_notify
 from utils.set_bot_commands import set_default_commands
 
-# ALLOWED_UPDATES = ['message, callback_query, inline_query']
-
 
 def setup_handlers(dp: Dispatcher) -> None:
     """HANDLERS"""
@@ -62,7 +60,7 @@ async def aiogram_on_shutdown_polling(dispatcher: Dispatcher, bot: Bot):
 
 
 def main():
-    bot = Bot(token=BOT_TOKEN, parse_mode=ParseMode.HTML)
+    bot = Bot(token=BOT_TOKEN)
     storage = MemoryStorage()
     dispatcher = Dispatcher(storage=storage)
     allowed_updates = ['message', 'callback_query']
