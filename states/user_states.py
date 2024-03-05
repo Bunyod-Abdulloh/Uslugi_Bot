@@ -1,6 +1,5 @@
 from aiogram.fsm.state import StatesGroup, State
 
 
-class UserCommunicate(StatesGroup):
+class UserCommunicateUz(StatesGroup):
     complaint = State()
-

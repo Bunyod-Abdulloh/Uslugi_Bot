@@ -7,8 +7,11 @@ user_start_router = Router()
 
 
 @user_start_router.message(CommandStart())
-async def start_cmd(message: types.Message):
+async def start_cmduz(message: types.Message):
     await message.answer(
         text='Klinika botimizga xush kelibsiz!',
-        reply_markup=user_main_default_button
+        reply_markup=user_main_default_button(
+            communicate_doctor="Shifokor bilan bog'lanish",
+            search="Qidirish", profile="Shaxsiy kabinet"
+        )
     )

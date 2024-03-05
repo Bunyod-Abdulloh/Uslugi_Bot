@@ -10,5 +10,10 @@ user_main_router.message.filter(ChatTypeFilter(['private']))
 async def communicate_to_specialist(message: types.Message):
     await message.answer(
         text="Tugmalardan birini tanlang",
-        reply_markup=select_gender_communicate()
+        reply_markup=select_gender_communicate(
+            man_text="Erkak shifokor", man_callback="complaintuz_Erkak",
+            woman_text="Ayol shifokor", woman_callback="complaintuz_Ayol",
+            all_text="Ahamiyati yo'q", all_callback="complaintuz_Ahamiyatsiz",
+            back_text="Ortga", back_callback="back_complaintuz"
+        )
     )

@@ -1,17 +1,15 @@
 import asyncio
-import logging
-import sys
 
-from aiogram import Dispatcher, Bot, types
+from aiogram import Dispatcher, Bot
 from aiogram.client.default import DefaultBotProperties
 from aiogram.client.session.middlewares.request_logging import logger
 from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
 
 from data.config import BOT_TOKEN
-from handlers.users.start import user_start_router
-from handlers.users.user_communicate import user_communicate_router
-from handlers.users.user_main import user_main_router
+from handlers.users.uz.start import user_start_router
+from handlers.users.uz.user_communicate import user_communicate_router
+from handlers.users.uz.user_main import user_main_router
 from loader import db
 from middlewares.throttling import ThrottlingMiddleware
 from utils.notify_admins import on_startup_notify
