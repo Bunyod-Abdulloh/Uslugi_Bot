@@ -1,7 +1,7 @@
 from aiogram import types, Router
 from aiogram.filters import CommandStart
 
-from keyboards.default import user_main_default_button
+from keyboards.default.user_default_buttons import user_main_default_button
 
 user_start_router = Router()
 

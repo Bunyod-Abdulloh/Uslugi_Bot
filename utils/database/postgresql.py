@@ -123,9 +123,9 @@ class Database:
         )
         return sql, tuple(parameters.values())
 
-    async def add_complaint_user(self, telegram_id, get_doctor):
-        sql = "INSERT INTO Users (telegram_id, get_doctor) VALUES($1, $2) returning *"
-        return await self.execute(sql, telegram_id, get_doctor, fetchrow=True)
+    async def add_user(self, telegram_id):
+        sql = "INSERT INTO Users (telegram_id) VALUES($1) returning *"
+        return await self.execute(sql, telegram_id, fetchrow=True)
 
     async def select_all_users(self):
         sql = "SELECT * FROM Users"
@@ -147,3 +147,39 @@ class Database:
 
     async def drop_table_users(self):
         await self.execute("DROP TABLE Users", execute=True)
+
+    # ============================= FOYDALANUVCHILAR SHIKOYATLARI JADVALI =============================
+    async def create_table_complaint(self):
+        sql = """
+        CREATE TABLE IF NOT EXISTS Complaint (
+        id SERIAL PRIMARY KEY,
+        checked_date DATE DEFAULT CURRENT_DATE,                   
+        telegram_id BIGINT NOT NULL UNIQUE,        
+        gender_doctor TEXT NULL,
+        type_doctor TEXT NULL,        
+        complaint VARCHAR(4000) NULL        
+        );
+        """
+        await self.execute(sql, execute=True)
+
+    async def add_complaint(self, telegram_id, gender_doctor):
+        sql = "INSERT INTO Complaint (telegram_id, gender_doctor) VALUES($1, $2) returning id"
+        return await self.execute(sql, telegram_id, gender_doctor, fetchrow=True)
+
+    async def update_doctor_complaint(self, type_doctor, id_):
+        sql = "UPDATE Complaint SET type_doctor=$1 WHERE id=$2"
+        return await self.execute(sql, type_doctor, id_, execute=True)
+
+    async def update_user_complaint(self, complaint, id_):
+        sql = "UPDATE Complaint SET complaint=$1 WHERE id=$2"
+        return await self.execute(sql, complaint, id_, execute=True)
+
+    async def select_complaint_by_id(self, id_):
+        sql = f"SELECT * FROM Complaint WHERE id='{id_}'"
+        return await self.execute(sql, fetchrow=True)
+
+    async def delete_complaint_by_id(self, id_):
+        await self.execute(f"DELETE FROM Complaint WHERE id='{id_}'", execute=True)
+
+    async def drop_table_complaint(self):
+        await self.execute("DROP TABLE Complaint", execute=True)
