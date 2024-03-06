@@ -17,27 +17,3 @@ def user_main_default_button(communicate_doctor: str, search: str, profile: str)
         resize_keyboard=True
     )
     return buttons
-
-
-def user_search_cbuttons(search_clinic: str, search_doctor: str, search_address: str, nearest_clinics: str,
-                         back_main_menu: str):
-    buttons = ReplyKeyboardMarkup(
-        keyboard=[
-            [
-                KeyboardButton(text=f"🏥 {search_clinic}")
-            ],
-            [
-                KeyboardButton(text=f"💉 {search_doctor}")
-            ],
-            [
-                KeyboardButton(text=f"📍 {search_address}")
-            ],
-            [
-                KeyboardButton(text=f"🚶‍♂️ {nearest_clinics}")
-            ],
-            [
-                KeyboardButton(text=f"🏡 {back_main_menu}")
-            ],
-        ]
-    )
-    return buttons

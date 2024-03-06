@@ -41,28 +41,36 @@ class Database:
                     result = await connection.execute(command, *args)
                 return result
 
-# ============================= KLINIKALAR JADVALI =============================
+# ============================= KLINIKALAR VA TIBBIY MARKAZLAR JADVALI =============================
     async def create_table_company(self):
         sql = """
         CREATE TABLE IF NOT EXISTS Company (
         id SERIAL PRIMARY KEY,
-        created_at DATE DEFAULT CURRENT_NOW(),
-        fullname VARCHAR(1000) NULL,
+        created_at DATE DEFAULT CURRENT_DATE,
+        name VARCHAR(1000) NULL,
         address VARCHAR(1000) NULL,
         landmark VARCHAR(1000) NULL,
         work_day VARCHAR(255) NULL,
         work_time VARCHAR(255) NULL,
         latitude FLOAT NULL,
         longitude FLOAT NULL,
-        image FILE NULL,
-        description VARCHAR(4000)
-        phone_one VARCHAR(50)
-        phone_two VARCHAR(50)
+        image TEXT NULL,
+        description VARCHAR(4000) NULL,
+        phone_one VARCHAR(50) NULL,
+        phone_two VARCHAR(50) NULL 
         );
         """
         await self.execute(sql, execute=True)
 
-# ============================= MUTAXASSISLIK VA HIZMATLAR JADVALI =============================
+    async def add_company(self, name, image):
+        sql = "INSERT INTO Company (name, image) VALUES($1, $2) returning *"
+        return await self.execute(sql, name, image, fetchrow=True)
+
+    async def select_all_clinics(self):
+        sql = "SELECT * FROM Company"
+        return await self.execute(sql, fetch=True)
+
+    # ============================= MUTAXASSISLIK VA HIZMATLAR JADVALI =============================
     async def create_table_referring_and_services(self):
         sql = """
         CREATE TABLE IF NOT EXISTS Doctors_Services (

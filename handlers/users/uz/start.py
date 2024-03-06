@@ -12,7 +12,26 @@ uz_main_keyboard = user_main_default_button(
 
 @user_start_router.message(CommandStart())
 async def start_cmduz(message: types.Message):
+    # buttons = types.ReplyKeyboardMarkup(
+    #     keyboard=[
+    #         [
+    #             types.KeyboardButton(text="🛍 Mahsulotlar")
+    #         ],
+    #         [
+    #             types.KeyboardButton(text="👤 Shaxsiy kabinet"),
+    #             types.KeyboardButton(text="🛒 Savat")
+    #         ],
+    #         [
+    #             types.KeyboardButton(text="❓ Savol yuborish")
+    #         ],
+    #         [
+    #             types.KeyboardButton(text="📰 Foydali maqolalar")
+    #         ]
+    #     ],
+    #     resize_keyboard=True
+    # )
+
     await message.answer(
-        text='Klinika botimizga xush kelibsiz!',
+        text='Botimizga xush kelibsiz!',
         reply_markup=uz_main_keyboard
     )

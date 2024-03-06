@@ -42,9 +42,10 @@ async def setup_aiogram(dispatcher: Dispatcher, bot: Bot) -> None:
 async def database_connected():
     await db.create()
     # await db.drop_users()
-    await db.drop_table_complaint()
+    # await db.drop_table_complaint()
     await db.create_table_users()
     await db.create_table_complaint()
+    await db.create_table_company()
 
 
 async def aiogram_on_startup_polling(dispatcher: Dispatcher, bot: Bot) -> None:

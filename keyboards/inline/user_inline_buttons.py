@@ -44,8 +44,33 @@ def user_send_complaint(re_enter_text: str, re_enter_callback, check_text: str, 
                 InlineKeyboardButton(text=f"✅ {check_text}", callback_data=check_callback)
             ],
             [
-              InlineKeyboardButton(text=f"⬅️ {back_text}", callback_data=back_callback)
+                InlineKeyboardButton(text=f"⬅️ {back_text}", callback_data=back_callback)
             ]
         ]
     )
     return keyboard
+
+
+def user_search_ibuttons(search_clinic: str, search_doctor: str, search_address: str, nearest_clinics: str,
+                         back_main_menu: str):
+    buttons = InlineKeyboardMarkup(
+        inline_keyboard =[
+            [
+                InlineKeyboardButton(text=f"🏥 {search_clinic}", callback_data=search_clinic,
+                                     switch_inline_query="salom")
+            ],
+            [
+                InlineKeyboardButton(text=f"💉 {search_doctor}", callback_data=search_doctor)
+            ],
+            [
+                InlineKeyboardButton(text=f"📍 {search_address}", callback_data=search_address)
+            ],
+            [
+                InlineKeyboardButton(text=f"🚶‍♂️ {nearest_clinics}", callback_data=nearest_clinics)
+            ],
+            [
+                InlineKeyboardButton(text=f"⬅️ {back_main_menu}", callback_data="ortga")
+            ],
+        ]
+    )
+    return buttons
