@@ -67,7 +67,7 @@ class Database:
         return await self.execute(sql, name, image, fetchrow=True)
 
     async def select_all_clinics(self):
-        sql = "SELECT * FROM Company"
+        sql = "SELECT * FROM Company ORDER BY name"
         return await self.execute(sql, fetch=True)
 
     # ============================= MUTAXASSISLIK VA HIZMATLAR JADVALI =============================
