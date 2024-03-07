@@ -12,9 +12,9 @@ uz_select_gender_ibuttons = select_gender_communicate(
 )
 
 uz_search_ibuttons = user_search_ibuttons(
-    search_clinic="Klinika bo'yicha qidirish", search_doctor="Shifokor sohasi bo'yicha qidirish",
-    search_address="Eng yaqin klinikalar ro'yxatini chiqarish", nearest_clinics="Manzil bo'yicha qidirish",
-    back_main_menu="Bosh sahifaga qaytish"
+    search_clinic="Klinika bo'yicha qidirish", search_service="Hizmat turi bo'yicha qidirish",
+    search_doctor="Shifokor sohasi bo'yicha qidirish", search_address="Eng yaqin klinikalar ro'yxatini chiqarish",
+    nearest_clinics="Manzil bo'yicha qidirish", back_main_menu="Bosh sahifaga qaytish"
 )
 
 

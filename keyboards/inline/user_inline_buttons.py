@@ -1,4 +1,4 @@
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, SwitchInlineQueryChosenChat, LoginUrl
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from utils.clinics import doctors
@@ -51,16 +51,21 @@ def user_send_complaint(re_enter_text: str, re_enter_callback, check_text: str, 
     return keyboard
 
 
-def user_search_ibuttons(search_clinic: str, search_doctor: str, search_address: str, nearest_clinics: str,
+def user_search_ibuttons(search_clinic: str, search_service: str, search_doctor: str, search_address: str, nearest_clinics: str,
                          back_main_menu: str):
     buttons = InlineKeyboardMarkup(
-        inline_keyboard =[
+        inline_keyboard=[
             [
-                InlineKeyboardButton(text=f"🏥 {search_clinic}", callback_data=search_clinic,
-                                     switch_inline_query="salom")
+                InlineKeyboardButton(text=f"🏥 {search_clinic}",
+                                     switch_inline_query_current_chat="klinikalar")
             ],
             [
-                InlineKeyboardButton(text=f"💉 {search_doctor}", callback_data=search_doctor)
+                InlineKeyboardButton(text=f"💧 {search_service}",
+                                     switch_inline_query_current_chat="hizmatlar")
+            ],
+            [
+                InlineKeyboardButton(text=f"💉 {search_doctor}",
+                                     switch_inline_query_current_chat="shifokorlar")
             ],
             [
                 InlineKeyboardButton(text=f"📍 {search_address}", callback_data=search_address)
