@@ -12,9 +12,9 @@ uz_select_gender_ibuttons = select_gender_communicate(
 )
 
 uz_search_ibuttons = user_search_ibuttons(
-    search_clinic="Klinika bo'yicha qidirish", search_service="Hizmat turi bo'yicha qidirish",
-    search_doctor="Shifokor sohasi bo'yicha qidirish", search_address="Eng yaqin klinikalar ro'yxatini chiqarish",
-    nearest_clinics="Manzil bo'yicha qidirish", back_main_menu="Bosh sahifaga qaytish"
+    search_clinic="Klinika bo'yicha", search_service="Hizmat turi bo'yicha",
+    search_doctor="Shifokor sohasi bo'yicha", search_address="Eng yaqin klinikalar",
+    nearest_clinics="Manzil bo'yicha", back_main_menu="Ortga"
 )
 
 
@@ -29,6 +29,6 @@ async def communicate_to_specialist(message: types.Message):
 @user_main_router.message(F.text == "🔍 Qidirish")
 async def search_(message: types.Message):
     await message.answer(
-        text="Quyidagilardan birini tanlang",
+        text="Qidiruv turini tanlang",
         reply_markup=uz_search_ibuttons
     )

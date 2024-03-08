@@ -1,10 +1,12 @@
-from aiogram import Router, F, types
+from aiogram import Router, types, F
+from aiogram.filters import StateFilter
+from aiogram.filters.magic_data import MagicData
+from aiogram.handlers import InlineQueryHandler
 
 from handlers.users.uz.start import uz_main_keyboard
-from loader import db
+from loader import db, bot
 
 user_search_router = Router()
-
 
 services = ['Akusherlik', 'Algologiya', 'Allergologiya', 'Muqobil tibbiyot',
             'Tahlillar', 'Angiologiya', 'Andrologiya', 'Anezteziologiya va reanimatologiya']
@@ -12,14 +14,12 @@ services = ['Akusherlik', 'Algologiya', 'Allergologiya', 'Muqobil tibbiyot',
 
 @user_search_router.message(F.text == "salom")
 async def get_photo_id(message: types.Message):
-    # file_id = message.photo[-1].file_id
-    # name = message.caption
-    # await db.add_company(
-    #     name=name, image=file_id
-    # )
-    # clinics = await db.select_all_clinics()
-    # print(clinics)
-    pass
+    await message.answer(
+        text="GIF image",
+        link_preview_options=types.LinkPreviewOptions(
+            url="CgACAgIAAxkBAAIDMWXp_Nv-2TOo5t2IWMya5t4y0E2BAAL6DgAClctBSLqqKy7uhDekNAQ"
+        )
+    )
 
 
 @user_search_router.message(F.text == "🏡 Bosh sahifaga qaytish")
@@ -30,58 +30,73 @@ async def back_main_menu(message: types.Message):
 
 
 @user_search_router.inline_query(F.text == "klinikalar")
-async def search_inline_mode(inline_query: types.InlineQuery):
+async def search_clinics(inline_query: types.InlineQuery):
+    print(inline_query.query)
+    query_ = inline_query.query.lower()
     clinics = await db.select_all_clinics()
-    result_clinics = []
+    result_all = []
     for clinic in clinics:
-        result_clinics.append(
-            types.InlineQueryResultArticle(
-                id=str(clinic['id']),
-                title=clinic['name'],
+        if '"' in query_:
+            query_ = query_.replace('"', '')
+        if query_ in clinic['name'].lower():
+            result_all = [types.InlineQueryResultArticle(
+                id=str(clinic['id']), title=clinic['name'],
                 description=f"Manzil: {clinic['address']}\nIsh vaqti: {clinic['work_time']}",
                 input_message_content=types.InputTextMessageContent(
-                    message_text=f"Hello, this is result {clinic['id']}"
+                    message_text=f"Hello, this is result {clinic['id']}", parse_mode="HTML"
+                )
+            )]
+            # await inline_query.answer(
+            #     results=result, cache_time=1
+            # )
+        else:
+            result_all.append(
+                types.InlineQueryResultArticle(
+                    id=str(clinic['id']), title=clinic['name'],
+                    description=f"Manzil: {clinic['address']}\nIsh vaqti: {clinic['work_time']}",
+                    input_message_content=types.InputTextMessageContent(
+                        message_text=f"Hello, this is result {clinic['id']}", parse_mode="HTML"
+                    )
                 )
             )
-        )
-    await inline_query.answer(results=result_clinics,
-                              switch_pm_parameter="Qidirish",
-                              switch_pm_text="Pastdan tepaga suring"
+    await inline_query.answer(results=result_all, switch_pm_parameter="Parameter",
+                              switch_pm_text="Pastdan tepaga suring", cache_time=1
                               )
 
 
 @user_search_router.inline_query(F.text == "hizmatlar")
-async def search_services(inline_query: types.InlineQuery):
+async def search_services(query: types.InlineQuery):
+    print("services qidirish")
     result_services = []
     c = 0
     for clinic in services:
         c += 1
         result_services.append(
             types.InlineQueryResultArticle(
+                type="article",
                 id=str(c),
                 title=clinic,
                 description=f"Manzil: {clinic}\nIsh vaqti: {clinic}",
                 input_message_content=types.InputTextMessageContent(
-                    message_text=f"Hello, this is result {clinic}"
+                    message_text=f"Hello, this is result {clinic}",
+                    parse_mode="HTML"
                 )
             )
         )
-    await inline_query.answer(results=result_services,
-                              switch_pm_parameter="Qidirish",
-                              switch_pm_text="Pastdan tepaga suring"
-                              )
+    await query.answer(results=result_services,
+                       switch_pm_parameter="Qidirish", switch_pm_text="Pastdan tepaga suring"
+                       )
 
-
-@user_search_router.message(F.text == "💉 Shifokor sohasi bo'yicha qidirish")
-async def search_doctor(message: types.Message):
-    pass
-
-
-@user_search_router.message(F.text == "🚶‍ Eng yaqin klinikalar ro'yxatini chiqarish")
-async def nearest_clinics(message: types.Message):
-    pass
-
-
-@user_search_router.message(F.text == "📍 Manzil bo'yicha qidirish")
-async def search_address(message: types.Message):
-    pass
+# @user_search_router.message(F.text == "💉 Shifokor sohasi bo'yicha qidirish")
+# async def search_doctor(message: types.Message):
+#     pass
+#
+#
+# @user_search_router.message(F.text == "🚶‍ Eng yaqin klinikalar ro'yxatini chiqarish")
+# async def nearest_clinics(message: types.Message):
+#     pass
+#
+#
+# @user_search_router.message(F.text == "📍 Manzil bo'yicha qidirish")
+# async def search_address(message: types.Message):
+#     pass

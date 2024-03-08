@@ -56,12 +56,10 @@ def user_search_ibuttons(search_clinic: str, search_service: str, search_doctor:
     buttons = InlineKeyboardMarkup(
         inline_keyboard=[
             [
-                InlineKeyboardButton(text=f"🏥 {search_clinic}",
-                                     switch_inline_query_current_chat="klinikalar")
+                InlineKeyboardButton(text=f"🏥 {search_clinic}", switch_inline_query_current_chat="")
             ],
             [
-                InlineKeyboardButton(text=f"💧 {search_service}",
-                                     switch_inline_query_current_chat="hizmatlar")
+                InlineKeyboardButton(text=f"💧 {search_service}", switch_inline_query_current_chat="")
             ],
             [
                 InlineKeyboardButton(text=f"💉 {search_doctor}",

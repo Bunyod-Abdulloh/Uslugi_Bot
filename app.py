@@ -11,7 +11,7 @@ from data.config import BOT_TOKEN
 from handlers.users.uz.start import user_start_router
 from handlers.users.uz.user_communicate import user_complaint_router
 from handlers.users.uz.user_main import user_main_router
-from handlers.users.uz.user_search import user_search_router, search_inline_mode
+from handlers.users.uz.user_search import user_search_router, search_services, search_clinics
 from loader import db
 from middlewares.throttling import ThrottlingMiddleware
 from utils.notify_admins import on_startup_notify
@@ -73,7 +73,8 @@ def main():
     allowed_updates = ['message', 'callback_query', 'inline_query', 'chosen_inline_result']
     dispatcher.startup.register(aiogram_on_startup_polling)
     dispatcher.shutdown.register(aiogram_on_shutdown_polling)
-    dispatcher.inline_query.register(search_inline_mode)
+    dispatcher.inline_query.register(search_clinics)
+    dispatcher.inline_query.register(search_services)
 
     asyncio.run(dispatcher.start_polling(bot, close_bot_session=True, allowed_updates=allowed_updates))
 
