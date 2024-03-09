@@ -1,6 +1,9 @@
 from aiogram import Router, types, F
+from aiogram.fsm.context import FSMContext
+
 from filters.chat_type_filter import ChatTypeFilter
 from keyboards.inline.user_inline_buttons import select_gender_communicate, user_search_ibuttons
+from states.user_states import UserSearchUz
 
 user_main_router = Router()
 user_main_router.message.filter(ChatTypeFilter(['private']))
@@ -27,8 +30,9 @@ async def communicate_to_specialist(message: types.Message):
 
 
 @user_main_router.message(F.text == "🔍 Qidirish")
-async def search_(message: types.Message):
+async def search_(message: types.Message, state: FSMContext):
     await message.answer(
         text="Qidiruv turini tanlang",
         reply_markup=uz_search_ibuttons
     )
+    # await state.set_state(UserSearchUz.clinics)

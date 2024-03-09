@@ -30,7 +30,7 @@ async def start_cmduz(message: types.Message):
     #     ],
     #     resize_keyboard=True
     # )
-
+    print(message.from_user.id)
     await message.answer(
         text='Botimizga xush kelibsiz!',
         reply_markup=uz_main_keyboard

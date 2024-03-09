@@ -62,8 +62,7 @@ def user_search_ibuttons(search_clinic: str, search_service: str, search_doctor:
                 InlineKeyboardButton(text=f"💧 {search_service}", switch_inline_query_current_chat="")
             ],
             [
-                InlineKeyboardButton(text=f"💉 {search_doctor}",
-                                     switch_inline_query_current_chat="shifokorlar")
+                InlineKeyboardButton(text=f"💉 {search_doctor}", Zswitch_inline_query_current_chat="")
             ],
             [
                 InlineKeyboardButton(text=f"📍 {search_address}", callback_data=search_address)

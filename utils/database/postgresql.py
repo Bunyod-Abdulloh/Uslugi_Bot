@@ -70,6 +70,10 @@ class Database:
         sql = "SELECT * FROM Company ORDER BY name"
         return await self.execute(sql, fetch=True)
 
+    async def select_clinic_like(self, text):
+        sql = f"SELECT *, LOWER(name) FROM Company WHERE LOWER(name) LIKE '%{text}%'"
+        return await self.execute(sql, fetch=True)
+
     # ============================= MUTAXASSISLIK VA HIZMATLAR JADVALI =============================
     async def create_table_referring_and_services(self):
         sql = """
