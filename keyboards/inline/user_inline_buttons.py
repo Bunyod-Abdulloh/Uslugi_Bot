@@ -56,13 +56,14 @@ def user_search_ibuttons(search_clinic: str, search_service: str, search_doctor:
     buttons = InlineKeyboardMarkup(
         inline_keyboard=[
             [
-                InlineKeyboardButton(text=f"🏥 {search_clinic}", switch_inline_query_current_chat="")
+                InlineKeyboardButton(text=f"🏥 {search_clinic}", switch_inline_query_current_chat="klinika",
+                                     )
             ],
             [
-                InlineKeyboardButton(text=f"💧 {search_service}", switch_inline_query_current_chat="")
+                InlineKeyboardButton(text=f"💧 {search_service}", switch_inline_query_current_chat="hizmat")
             ],
             [
-                InlineKeyboardButton(text=f"💉 {search_doctor}", Zswitch_inline_query_current_chat="")
+                InlineKeyboardButton(text=f"💉 {search_doctor}", switch_inline_query_current_chat="")
             ],
             [
                 InlineKeyboardButton(text=f"📍 {search_address}", callback_data=search_address)
@@ -71,7 +72,7 @@ def user_search_ibuttons(search_clinic: str, search_service: str, search_doctor:
                 InlineKeyboardButton(text=f"🚶‍♂️ {nearest_clinics}", callback_data=nearest_clinics)
             ],
             [
-                InlineKeyboardButton(text=f"⬅️ {back_main_menu}", callback_data="ortga")
+                InlineKeyboardButton(text=f"⬅️ {back_main_menu}", callback_data="back_main_menu")
             ],
         ]
     )

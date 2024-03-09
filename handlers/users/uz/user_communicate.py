@@ -14,13 +14,15 @@ user_complaint_router = Router()
 @user_complaint_router.callback_query(F.data.contains("complaintuz_"))
 async def complaintuz_gender_doctor(call: types.CallbackQuery, state: FSMContext):
     gender_doctor = call.data.split("_")[1]
-
-    add_complaint = await db.add_complaint(
-        telegram_id=call.from_user.id, gender_doctor=gender_doctor
-    )
-    await state.update_data(
-        complaint_id=add_complaint[0]
-    )
+    try:
+        add_complaint = await db.add_complaint(
+            telegram_id=call.from_user.id, gender_doctor=gender_doctor
+        )
+        await state.update_data(
+            complaint_id=add_complaint[0]
+        )
+    except:
+        pass
     await call.message.edit_text(
         text="Shifokor turini tanlang", reply_markup=user_select_doctors_ibutton(
             callback="complaintuzdoctor", back_text="Ortga", back_callback="back_complaintuz"

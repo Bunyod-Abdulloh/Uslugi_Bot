@@ -1,7 +1,5 @@
 from aiogram import Router, types, F
 from aiogram.filters import StateFilter
-from aiogram.filters.magic_data import MagicData
-from aiogram.handlers import InlineQueryHandler
 
 from handlers.users.uz.start import uz_main_keyboard
 from loader import db, bot
@@ -23,60 +21,75 @@ async def get_photo_id(message: types.Message):
     )
 
 
-@user_search_router.message(F.text == "🏡 Bosh sahifaga qaytish")
-async def back_main_menu(message: types.Message):
-    await message.answer(
+@user_search_router.callback_query(F.data == "back_main_menu")
+async def back_main_menu(call: types.CallbackQuery):
+    await call.message.delete()
+    await call.message.answer(
         text="Bosh sahifa", reply_markup=uz_main_keyboard
     )
 
 
-c = []
+# @user_search_router.inline_query(F.data == "klinika")
+# async def search_clinics(inline_query: types.InlineQuery):
+#     print(f"{user_search_router} klinika search")
+#     query_ = inline_query.query
+#     clinics = await db.select_all_clinics()
+#     result_all = []
+#     result_search = []
+#     if len(query_) > 0:
+#         sql_like = await db.select_clinic_like(text=query_)
+#         for clinic in sql_like:
+#             result_search.append(
+#                 types.InlineQueryResultArticle(
+#                     id=str(clinic['id']), title=clinic['name'],
+#                     description=f"Manzil: {clinic['address']}\nIsh vaqti: {clinic['work_time']}",
+#                     input_message_content=types.InputTextMessageContent(
+#                         message_text=f"Hello, this is result {clinic['id']}", parse_mode="HTML"
+#                     )
+#                 )
+#             )
+#         await inline_query.answer(
+#             results=result_search
+#         )
+#     else:
+#         for clinic in clinics:
+#             result_all.append(
+#                 types.InlineQueryResultArticle(
+#                     id=str(clinic['id']), title=clinic['name'],
+#                     description=f"Manzil: {clinic['address']}\nIsh vaqti: {clinic['work_time']}",
+#                     input_message_content=types.InputTextMessageContent(
+#                         message_text=f"Hello, this is result {clinic['id']}", parse_mode="HTML"
+#                     )
+#                 )
+#             )
+#         await inline_query.answer(results=result_all, switch_pm_parameter="Parameter",
+#                                   switch_pm_text="Pastdan tepaga suring", cache_time=1
+#                                   )
 
 
-@user_search_router.inline_query()
-async def search_clinics_(inline_query: types.InlineQuery):
-    print("Salom 1")
-
-
-@user_search_router.inline_query(StateFilter(UserSearchUz.clinics))
-async def search_clinics(inline_query: types.InlineQuery):
-    query_ = inline_query.query
-    clinics = await db.select_all_clinics()
+# @user_search_router.callback_query(F.data == "shifoxona")
+@user_search_router.inline_query(F.query == "hizmat")
+async def search_services(inline_query: types.InlineQuery):
+    print(inline_query)
     result_all = []
-    result_search = []
-    if len(query_) > 0:
-        sql_like = await db.select_clinic_like(text=query_)
-        for clinic in sql_like:
-            result_search.append(
-                types.InlineQueryResultArticle(
-                    id=str(clinic['id']), title=clinic['name'],
-                    description=f"Manzil: {clinic['address']}\nIsh vaqti: {clinic['work_time']}",
-                    input_message_content=types.InputTextMessageContent(
-                        message_text=f"Hello, this is result {clinic['id']}", parse_mode="HTML"
-                    )
+    clinics = await db.select_all_clinics()
+    for clinic in clinics:
+        result_all.append(
+            types.InlineQueryResultArticle(
+                id=str(clinic['id']), title=clinic['name'],
+                description=f"Manzil: {clinic['address']}\nIsh vaqti: {clinic['work_time']}",
+                input_message_content=types.InputTextMessageContent(
+                    message_text=f"Hello, this is result {clinic['id']}", parse_mode="HTML"
                 )
             )
-        await inline_query.answer(
-            results=result_search
         )
-    else:
-        for clinic in clinics:
-            result_all.append(
-                types.InlineQueryResultArticle(
-                    id=str(clinic['id']), title=clinic['name'],
-                    description=f"Manzil: {clinic['address']}\nIsh vaqti: {clinic['work_time']}",
-                    input_message_content=types.InputTextMessageContent(
-                        message_text=f"Hello, this is result {clinic['id']}", parse_mode="HTML"
-                    )
-                )
-            )
-        await inline_query.answer(results=result_all, switch_pm_parameter="Parameter",
-                                  switch_pm_text="Pastdan tepaga suring", cache_time=1
-                                  )
+    await inline_query.answer(results=result_all, switch_pm_parameter="Parameter",
+                              switch_pm_text="Pastdan tepaga suring", cache_time=1
+                              )
 
 
 @user_search_router.inline_query()
-async def search_clinics__(inline_query: types.InlineQuery):
+async def search_doctors(inline_query: types.InlineQuery):
     print("Salom 3")
 
 
