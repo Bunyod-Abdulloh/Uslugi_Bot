@@ -1,5 +1,4 @@
 import asyncio
-import logging
 
 from aiogram import Dispatcher, Bot
 from aiogram.client.default import DefaultBotProperties
@@ -8,22 +7,21 @@ from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
 
 from data.config import BOT_TOKEN
+from handlers.users.uz.search_clinics import clinics_router, uz_back_search_router
 from handlers.users.uz.start import user_start_router
-from handlers.users.uz.user_communicate import user_complaint_router
-from handlers.users.uz.user_main import user_main_router
-from handlers.users.uz.user_search import user_search_router, search_services
-from loader import db, dp
+from handlers.users.uz.communicate import user_complaint_router
+from handlers.users.uz.main import user_main_router
+from handlers.users.uz.search_main import search_router
+from loader import db
 from middlewares.throttling import ThrottlingMiddleware
 from utils.notify_admins import on_startup_notify
 from utils.set_bot_commands import set_default_commands
 
 
-def setup_handlers(dp: Dispatcher) -> None:
+def setup_handlers(dispatcher: Dispatcher) -> None:
     """HANDLERS"""
-    dp.include_router(user_start_router)
-    dp.include_router(user_main_router)
-    dp.include_router(user_complaint_router)
-    dp.include_router(user_search_router)
+    dispatcher.include_routers(user_start_router, user_main_router, user_complaint_router, search_router)
+    dispatcher.include_routers(clinics_router, uz_back_search_router)
 
 
 def setup_middlewares(dispatcher: Dispatcher, bot: Bot) -> None:
@@ -34,7 +32,7 @@ def setup_middlewares(dispatcher: Dispatcher, bot: Bot) -> None:
 
 async def setup_aiogram(dispatcher: Dispatcher, bot: Bot) -> None:
     # logger.info("Configuring aiogram")
-    setup_handlers(dp=dispatcher)
+    setup_handlers(dispatcher=dispatcher)
     setup_middlewares(dispatcher=dispatcher, bot=bot)
     # logger.info("Configured aiogram")
 
@@ -73,11 +71,8 @@ def main():
     allowed_updates = ['message', 'callback_query', 'inline_query', 'chosen_inline_result']
     dispatcher.startup.register(aiogram_on_startup_polling)
     dispatcher.shutdown.register(aiogram_on_shutdown_polling)
-    # dispatcher.inline_query.register(search_clinics)
-    dispatcher.inline_query.register(search_services)
-
     asyncio.run(dispatcher.start_polling(bot, close_bot_session=True,
-                                         allowed_updates=dp.resolve_used_update_types()))
+                                         allowed_updates=allowed_updates))
 
 
 if __name__ == "__main__":

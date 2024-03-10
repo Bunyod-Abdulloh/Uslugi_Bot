@@ -2,7 +2,7 @@ from aiogram import Router, F, types
 from aiogram.fsm.context import FSMContext
 
 from handlers.users.uz.start import uz_main_keyboard
-from handlers.users.uz.user_main import uz_select_gender_ibuttons
+from handlers.users.uz.main import uz_select_gender_ibuttons
 from keyboards.inline.user_inline_buttons import user_select_doctors_ibutton, user_send_complaint
 
 from loader import db

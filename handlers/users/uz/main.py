@@ -2,6 +2,7 @@ from aiogram import Router, types, F
 from aiogram.fsm.context import FSMContext
 
 from filters.chat_type_filter import ChatTypeFilter
+from keyboards.default.user_default_buttons import uz_user_search_cbuttons
 from keyboards.inline.user_inline_buttons import select_gender_communicate, user_search_ibuttons
 from states.user_states import UserSearchUz
 
@@ -14,10 +15,10 @@ uz_select_gender_ibuttons = select_gender_communicate(
     all_text="Ahamiyati yo'q", all_callback="complaintuz_Ahamiyatsiz", back_text="Ortga", back_callback="back_mainuz"
 )
 
-uz_search_ibuttons = user_search_ibuttons(
-    search_clinic="Klinika bo'yicha", search_service="Hizmat turi bo'yicha",
-    search_doctor="Shifokor sohasi bo'yicha", search_address="Eng yaqin klinikalar",
-    nearest_clinics="Manzil bo'yicha", back_main_menu="Ortga"
+uz_search_cbuttons = uz_user_search_cbuttons(
+    clinics="Klinika bo'yicha qidirish", services="Hizmat turi bo'yicha qidirish",
+    doctors="Shifokor sohasi bo'yicha qidirish", nearest_clinics="Eng yaqin klinikalar",
+    region="Hudud bo'yicha qidirish", back_main_menu="Ortga"
 )
 
 
@@ -33,6 +34,5 @@ async def communicate_to_specialist(message: types.Message):
 async def search_(message: types.Message, state: FSMContext):
     await message.answer(
         text="Qidiruv turini tanlang",
-        reply_markup=uz_search_ibuttons
+        reply_markup=uz_search_cbuttons
     )
-    # await state.set_state(UserSearchUz.clinics)

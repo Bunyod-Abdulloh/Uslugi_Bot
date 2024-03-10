@@ -51,19 +51,19 @@ def user_send_complaint(re_enter_text: str, re_enter_callback, check_text: str, 
     return keyboard
 
 
-def user_search_ibuttons(search_clinic: str, search_service: str, search_doctor: str, search_address: str, nearest_clinics: str,
-                         back_main_menu: str):
+def user_search_ibuttons(search_clinic: str, search_service: str, search_doctor: str, search_address: str,
+                         nearest_clinics: str, back_main_menu: str):
     buttons = InlineKeyboardMarkup(
         inline_keyboard=[
             [
-                InlineKeyboardButton(text=f"🏥 {search_clinic}", switch_inline_query_current_chat="klinika",
+                InlineKeyboardButton(text=f"🏥 {search_clinic}", switch_inline_query_current_chat=""
                                      )
             ],
             [
                 InlineKeyboardButton(text=f"💧 {search_service}", switch_inline_query_current_chat="hizmat")
             ],
             [
-                InlineKeyboardButton(text=f"💉 {search_doctor}", switch_inline_query_current_chat="")
+                InlineKeyboardButton(text=f"💉 {search_doctor}", switch_inline_query_current_chat="doktor ")
             ],
             [
                 InlineKeyboardButton(text=f"📍 {search_address}", callback_data=search_address)
@@ -77,3 +77,21 @@ def user_search_ibuttons(search_clinic: str, search_service: str, search_doctor:
         ]
     )
     return buttons
+
+
+def search_in_inline_mode(search: str, back_text: str, back_callback: str):
+    keyboard = InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text=f"🔎 {search}", switch_inline_query_current_chat=""
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    text=f"⬅️ {back_text}", callback_data=back_callback
+                )
+            ]
+        ]
+    )
+    return keyboard
