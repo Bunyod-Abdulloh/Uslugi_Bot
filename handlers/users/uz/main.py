@@ -6,8 +6,8 @@ from keyboards.default.user_default_buttons import uz_user_search_cbuttons
 from keyboards.inline.user_inline_buttons import select_gender_communicate, user_search_ibuttons
 from states.user_states import UserSearchUz
 
-user_main_router = Router()
-user_main_router.message.filter(ChatTypeFilter(['private']))
+router = Router()
+router.message.filter(ChatTypeFilter(['private']))
 
 uz_select_gender_ibuttons = select_gender_communicate(
     man_text="Erkak shifokor", man_callback="complaintuz_Erkak",
@@ -22,7 +22,7 @@ uz_search_cbuttons = uz_user_search_cbuttons(
 )
 
 
-@user_main_router.message(F.text == "📱 Shifokor bilan bog'lanish")
+@router.message(F.text == "📱 Shifokor bilan bog'lanish")
 async def communicate_to_specialist(message: types.Message):
     await message.answer(
         text="Tugmalardan birini tanlang",
@@ -30,7 +30,7 @@ async def communicate_to_specialist(message: types.Message):
     )
 
 
-@user_main_router.message(F.text == "🔍 Qidirish")
+@router.message(F.text == "🔍 Qidirish")
 async def search_(message: types.Message, state: FSMContext):
     await message.answer(
         text="Qidiruv turini tanlang",

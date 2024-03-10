@@ -8,10 +8,10 @@ from keyboards.inline.user_inline_buttons import user_select_doctors_ibutton, us
 from loader import db
 from states.user_states import UserCommunicateUz
 
-user_complaint_router = Router()
+router = Router()
 
 
-@user_complaint_router.callback_query(F.data.contains("complaintuz_"))
+@router.callback_query(F.data.contains("complaintuz_"))
 async def complaintuz_gender_doctor(call: types.CallbackQuery, state: FSMContext):
     gender_doctor = call.data.split("_")[1]
     try:
@@ -30,7 +30,7 @@ async def complaintuz_gender_doctor(call: types.CallbackQuery, state: FSMContext
     )
 
 
-@user_complaint_router.callback_query(F.data.contains("complaintuzdoctor_"))
+@router.callback_query(F.data.contains("complaintuzdoctor_"))
 async def complaintuz_type_doctor(call: types.CallbackQuery, state: FSMContext):
     data = await state.get_data()
 
@@ -46,7 +46,7 @@ async def complaintuz_type_doctor(call: types.CallbackQuery, state: FSMContext):
     await state.set_state(UserCommunicateUz.complaint)
 
 
-@user_complaint_router.message(UserCommunicateUz.complaint)
+@router.message(UserCommunicateUz.complaint)
 async def get_complaintuz(message: types.Message, state: FSMContext):
     data = await state.get_data()
     id_ = data["complaint_id"]
@@ -63,7 +63,7 @@ async def get_complaintuz(message: types.Message, state: FSMContext):
     )
 
 
-@user_complaint_router.callback_query(F.data == "re_enter_complaintuz")
+@router.callback_query(F.data == "re_enter_complaintuz")
 async def complaintuz_re_enter(call: types.CallbackQuery, state: FSMContext):
     data = await state.update_data()
     id_ = data["complaint_id"]
@@ -77,7 +77,7 @@ async def complaintuz_re_enter(call: types.CallbackQuery, state: FSMContext):
     )
 
 
-@user_complaint_router.callback_query(F.data == "check_complaintuz")
+@router.callback_query(F.data == "check_complaintuz")
 async def check_complaintuz(call: types.CallbackQuery, state: FSMContext):
     data = await state.get_data()
     id_ = data["complaint_id"]
@@ -100,7 +100,7 @@ async def check_complaintuz(call: types.CallbackQuery, state: FSMContext):
     )
 
 
-@user_complaint_router.callback_query(F.data == "back_complaintuz")
+@router.callback_query(F.data == "back_complaintuz")
 async def back_complaintuz(call: types.CallbackQuery, state: FSMContext):
     data = await state.get_data()
     if "complaint_id" in data.keys():
@@ -115,7 +115,7 @@ async def back_complaintuz(call: types.CallbackQuery, state: FSMContext):
     )
 
 
-@user_complaint_router.callback_query(F.data == "back_mainuz")
+@router.callback_query(F.data == "back_mainuz")
 async def back_mainuz(call: types.CallbackQuery):
     await call.message.delete()
     await call.message.answer(

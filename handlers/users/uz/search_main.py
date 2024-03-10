@@ -7,7 +7,7 @@ from keyboards.inline.user_inline_buttons import search_in_inline_mode
 from loader import db, bot
 from states.user_states import UserSearchUz
 
-search_router = Router()
+router = Router()
 
 services = ['Akusherlik', 'Algologiya', 'Allergologiya', 'Muqobil tibbiyot',
             'Tahlillar', 'Angiologiya', 'Andrologiya', 'Anezteziologiya va reanimatologiya']
@@ -17,14 +17,14 @@ search_ibuttons = search_in_inline_mode(
 )
 
 
-@search_router.message(F.text == "⬅️ Ortga")
+@router.message(F.text == "⬅️ Ortga")
 async def back_main_menu(message: types.Message):
     await message.answer(
         text="Bosh sahifa", reply_markup=uz_main_keyboard
     )
 
 
-@search_router.message(F.text == "🏥 Klinika bo'yicha qidirish")
+@router.message(F.text == "🏥 Klinika bo'yicha qidirish")
 async def uz_search_clinics(message: types.Message, state: FSMContext):
     await message.answer(
         text="🔎 <b>Qidirish</b> tugmasini bosib chiqarilgan ro'yxatdan kerakli klinikani tanlashingiz yoki matn "
@@ -34,27 +34,27 @@ async def uz_search_clinics(message: types.Message, state: FSMContext):
     await state.set_state(UserSearchUz.clinics)
 
 
-@search_router.message(F.text == "💧 Hizmat turi bo'yicha qidirish")
+@router.message(F.text == "💧 Hizmat turi bo'yicha qidirish")
 async def uz_search_services(message: types.Message):
     pass
 
 
-@search_router.message(F.text == "💉 Shifokor sohasi bo'yicha qidirish")
+@router.message(F.text == "💉 Shifokor sohasi bo'yicha qidirish")
 async def uz_search_doctors(message: types.Message):
     pass
 
 
-@search_router.message(F.text == "🚶‍ Eng yaqin klinikalar")
+@router.message(F.text == "🚶‍ Eng yaqin klinikalar")
 async def uz_search_nearest_clinics(message: types.Message):
     pass
 
 
-@search_router.message(F.text == "📍 Hudud bo'yicha qidirish")
+@router.message(F.text == "📍 Hudud bo'yicha qidirish")
 async def uz_search_region(message: types.Message):
     pass
 
 
-@search_router.inline_query(F.query == "hizmat")
+@router.inline_query(F.query == "hizmat")
 async def search_services(inline_query: types.InlineQuery):
     print("hizmat search")
     result_all = []
@@ -74,7 +74,7 @@ async def search_services(inline_query: types.InlineQuery):
                               )
 
 
-# @search_router.inline_query()
+# @router.inline_query()
 # async def search_doctors(inline_query: types.InlineQuery):
 #     print("Salom 3")
 
@@ -96,7 +96,7 @@ async def search_services(inline_query: types.InlineQuery):
     #
     #
 
-# @search_router.inline_query(F.text == "hizmatlar")
+# @router.inline_query(F.text == "hizmatlar")
 # async def search_services(query: types.InlineQuery):
 #     print("services qidirish")
 #     result_services = []
@@ -119,16 +119,16 @@ async def search_services(inline_query: types.InlineQuery):
 #                        switch_pm_parameter="Qidirish", switch_pm_text="Pastdan tepaga suring"
 #                        )
 
-# @search_router.message(F.text == "💉 Shifokor sohasi bo'yicha qidirish")
+# @router.message(F.text == "💉 Shifokor sohasi bo'yicha qidirish")
 # async def search_doctor(message: types.Message):
 #     pass
 #
 #
-# @search_router.message(F.text == "🚶‍ Eng yaqin klinikalar ro'yxatini chiqarish")
+# @router.message(F.text == "🚶‍ Eng yaqin klinikalar ro'yxatini chiqarish")
 # async def nearest_clinics(message: types.Message):
 #     pass
 #
 #
-# @search_router.message(F.text == "📍 Manzil bo'yicha qidirish")
+# @router.message(F.text == "📍 Manzil bo'yicha qidirish")
 # async def search_address(message: types.Message):
 #     pass

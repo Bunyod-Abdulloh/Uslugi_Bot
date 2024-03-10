@@ -1,4 +1,6 @@
 import asyncio
+import logging
+import sys
 
 from aiogram import Dispatcher, Bot
 from aiogram.client.default import DefaultBotProperties
@@ -7,11 +9,8 @@ from aiogram.enums import ParseMode
 from aiogram.fsm.storage.memory import MemoryStorage
 
 from data.config import BOT_TOKEN
-from handlers.users.uz.search_clinics import clinics_router, uz_back_search_router
-from handlers.users.uz.start import user_start_router
-from handlers.users.uz.communicate import user_complaint_router
-from handlers.users.uz.main import user_main_router
-from handlers.users.uz.search_main import search_router
+from handlers import setup_routers
+
 from loader import db
 from middlewares.throttling import ThrottlingMiddleware
 from utils.notify_admins import on_startup_notify
@@ -20,8 +19,7 @@ from utils.set_bot_commands import set_default_commands
 
 def setup_handlers(dispatcher: Dispatcher) -> None:
     """HANDLERS"""
-    dispatcher.include_routers(user_start_router, user_main_router, user_complaint_router, search_router)
-    dispatcher.include_routers(clinics_router, uz_back_search_router)
+    dispatcher.include_router(setup_routers())
 
 
 def setup_middlewares(dispatcher: Dispatcher, bot: Bot) -> None:
@@ -47,7 +45,7 @@ async def database_connected():
 
 
 async def aiogram_on_startup_polling(dispatcher: Dispatcher, bot: Bot) -> None:
-    logger.info(msg="Start polling!")
+    # logger.info(msg="Start polling!")
     await database_connected()
 
     await bot.delete_webhook(drop_pending_updates=True)
@@ -77,6 +75,7 @@ def main():
 
 if __name__ == "__main__":
     try:
+        logging.basicConfig(level=logging.INFO, stream=sys.stdout)
         main()
     except KeyboardInterrupt:
         logger.info("Bot stopped!")

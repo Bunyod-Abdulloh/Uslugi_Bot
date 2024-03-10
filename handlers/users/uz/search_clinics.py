@@ -4,7 +4,7 @@ from aiogram.fsm.context import FSMContext
 from loader import db, dp
 from states.user_states import UserSearchUz
 
-clinics_router = Router()
+router = Router()
 uz_back_search_router = Router()
 
 
@@ -14,7 +14,7 @@ async def back_search_uz(callback_query: types.CallbackQuery, state: FSMContext)
     print(callback_query.data)
 
 
-@clinics_router.inline_query(UserSearchUz.clinics)
+@router.inline_query(UserSearchUz.clinics)
 async def uz_clinics_one(inline_query: types.InlineQuery):
     query_ = inline_query.query
     clinics = await db.select_all_clinics()
