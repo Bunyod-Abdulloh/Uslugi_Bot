@@ -41,7 +41,7 @@ class Database:
                     result = await connection.execute(command, *args)
                 return result
 
-# ============================= KLINIKALAR VA TIBBIY MARKAZLAR JADVALI =============================
+    # ============================= KLINIKALAR VA TIBBIY MARKAZLAR JADVALI =============================
     async def create_table_company(self):
         sql = """
         CREATE TABLE IF NOT EXISTS Company (
@@ -62,9 +62,10 @@ class Database:
         """
         await self.execute(sql, execute=True)
 
-    async def add_company(self, name, image):
-        sql = "INSERT INTO Company (name, image) VALUES($1, $2) returning *"
-        return await self.execute(sql, name, image, fetchrow=True)
+    async def add_company(self, name, address, landmark, work_time, phone_one, description):
+        sql = ("INSERT INTO Company (name, address, landmark, work_time, phone_one, description) "
+               "VALUES($1, $2, $3. $4, $5, $6) returning *")
+        return await self.execute(sql, name, address, landmark, work_time, phone_one, description, fetchrow=True)
 
     async def select_all_clinics(self):
         sql = "SELECT * FROM Company ORDER BY name"
@@ -74,15 +75,18 @@ class Database:
         sql = f"SELECT *, LOWER(name) FROM Company WHERE LOWER(name) LIKE '%{text}%'"
         return await self.execute(sql, fetch=True)
 
+    async def drop_table_ds_and_ss(self):
+        await self.execute("DROP TABLE Company", execute=True)
+
     # ============================= MUTAXASSISLIK VA HIZMATLAR JADVALI =============================
     async def create_table_doctors_and_services(self):
         sql = """
         CREATE TABLE IF NOT EXISTS Doctors_Services (
         id SERIAL PRIMARY KEY,        
         created_at DATE DEFAULT CURRENT_DATE,
-        company VARCHAR(255) NULL,
+        name VARCHAR(255) NULL,
         doctor VARCHAR(255) NULL,
-        services VARCHAR(255) NULL,        
+        service VARCHAR(255) NULL,        
         region VARCHAR(255) NULL,
         city VARCHAR(255) NULL,
         district VARCHAR(255) NULL        
@@ -90,11 +94,14 @@ class Database:
         """
         await self.execute(sql, execute=True)
 
+    async def add_ds_and_ss(self, name, doctor, service):
+        sql = "INSERT INTO Doctors_Services (name, doctor, service) VALUES($1, $2, $3) returning *"
+        return await self.execute(sql, name, doctor, service, fetchrow=True)
+
     async def drop_table_ds_and_ss(self):
         await self.execute("DROP TABLE Doctors_Services", execute=True)
 
-
-# ============================= KLINIKA HODIMLARI JADVALI =============================
+    # ============================= KLINIKA HODIMLARI JADVALI =============================
     async def create_table_employees(self):
         sql = """
         CREATE TABLE IF NOT EXISTS Employees (
