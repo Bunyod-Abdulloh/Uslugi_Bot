@@ -1,7 +1,8 @@
 from aiogram import Router, types, F
 from aiogram.fsm.context import FSMContext
 
-from loader import db, dp
+from handlers.users.uz.main import uz_search_cbuttons
+from loader import db
 from states.user_states import UserSearchUz
 
 router = Router()
@@ -9,9 +10,13 @@ uz_back_search_router = Router()
 
 
 @uz_back_search_router.callback_query(F.data == "back_search_uz")
-async def back_search_uz(callback_query: types.CallbackQuery, state: FSMContext):
+async def back_search_uz(call: types.CallbackQuery, state: FSMContext):
     await state.clear()
-    print(callback_query.data)
+    await call.message.delete()
+    await call.message.answer(
+        text="Qidiruv turini tanlang",
+        reply_markup=uz_search_cbuttons
+    )
 
 
 @router.inline_query(UserSearchUz.clinics)

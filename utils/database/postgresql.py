@@ -75,14 +75,14 @@ class Database:
         return await self.execute(sql, fetch=True)
 
     # ============================= MUTAXASSISLIK VA HIZMATLAR JADVALI =============================
-    async def create_table_referring_and_services(self):
+    async def create_table_doctors_and_services(self):
         sql = """
         CREATE TABLE IF NOT EXISTS Doctors_Services (
-        id SERIAL PRIMARY KEY,
-        created_at DATE DEFAULT CURRENT_NOW(),
-        referring VARCHAR(255) NULL,
-        services VARCHAR(255) NULL,
+        id SERIAL PRIMARY KEY,        
+        created_at DATE DEFAULT CURRENT_DATE,
         company VARCHAR(255) NULL,
+        doctor VARCHAR(255) NULL,
+        services VARCHAR(255) NULL,        
         region VARCHAR(255) NULL,
         city VARCHAR(255) NULL,
         district VARCHAR(255) NULL        
@@ -90,12 +90,16 @@ class Database:
         """
         await self.execute(sql, execute=True)
 
+    async def drop_table_ds_and_ss(self):
+        await self.execute("DROP TABLE Doctors_Services", execute=True)
+
+
 # ============================= KLINIKA HODIMLARI JADVALI =============================
     async def create_table_employees(self):
         sql = """
         CREATE TABLE IF NOT EXISTS Employees (
         id SERIAL PRIMARY KEY,
-        created_at DATE DEFAULT CURRENT_NOW(),
+        created_at DATE DEFAULT CURRENT_DATE,
         username VARCHAR(255) NULL,
         fullname VARCHAR(255) NULL,
         phone_one VARCHAR(20) NULL,

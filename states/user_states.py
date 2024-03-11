@@ -8,6 +8,7 @@ class UserCommunicateUz(StatesGroup):
 class UserSearchUz(StatesGroup):
     clinics = State()
     services = State()
+    doctors = State()
     address = State()
     nearest_clinics = State()
 

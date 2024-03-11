@@ -39,9 +39,11 @@ async def database_connected():
     await db.create()
     # await db.drop_users()
     # await db.drop_table_complaint()
+    # await db.drop_table_ds_and_ss()
     await db.create_table_users()
     await db.create_table_complaint()
     await db.create_table_company()
+    await db.create_table_doctors_and_services()
 
 
 async def aiogram_on_startup_polling(dispatcher: Dispatcher, bot: Bot) -> None:
@@ -62,20 +64,18 @@ async def aiogram_on_shutdown_polling(dispatcher: Dispatcher, bot: Bot):
 
 def main():
     # logging.basicConfig(level=logging.INFO)
-    # logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
     bot = Bot(token=BOT_TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
     storage = MemoryStorage()
     dispatcher = Dispatcher(storage=storage)
     allowed_updates = ['message', 'callback_query', 'inline_query', 'chosen_inline_result']
     dispatcher.startup.register(aiogram_on_startup_polling)
     dispatcher.shutdown.register(aiogram_on_shutdown_polling)
-    asyncio.run(dispatcher.start_polling(bot, close_bot_session=True,
-                                         allowed_updates=allowed_updates))
+    asyncio.run(dispatcher.start_polling(bot, close_bot_session=True, allowed_updates=allowed_updates))
 
 
 if __name__ == "__main__":
     try:
-        logging.basicConfig(level=logging.INFO, stream=sys.stdout)
         main()
     except KeyboardInterrupt:
         logger.info("Bot stopped!")
