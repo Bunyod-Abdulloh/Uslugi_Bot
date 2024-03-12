@@ -6,6 +6,18 @@ from loader import db
 
 router = Router()
 
+html = requests.get("https://clinics.uz/uzb/catalog/medical-centers").text
+
+soup = LxmlSoup(html)
+
+search_all_clinics = soup.find_all(tag="h2")
+# sear_ = soup.find_all(tag="h2")
+for n in search_all_clinics:
+    print(n.)
+# for n in sear_:
+#     a = soup.find(tag="a")
+#     print(a)
+
 
 @router.message(F.text == "add")
 async def add_clinics_to_db(message: types.Message):
@@ -57,7 +69,8 @@ async def add_clinics_to_db(message: types.Message):
         name=clinic_name, address=clinic_address, landmark=landmark,
         work_time=work_time, phone_one=clinic_phone, description=clinic_description
     )
-    await db.add_ds_and_ss(name=clinic_name, )
+    await db.add_ds_and_ss(name=clinic_name, doctor=doctors, service=services)
+    await message.answer(text="Ma'lumotlar omborga joylandi!")
 
 
 services = ['Akusherlik', 'Algologiya', 'Allergologiya', 'Muqobil tibbiyot',
