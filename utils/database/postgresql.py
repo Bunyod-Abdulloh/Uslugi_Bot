@@ -51,7 +51,7 @@ class Database:
         address VARCHAR(1000) NULL,
         landmark VARCHAR(1000) NULL,
         work_day VARCHAR(255) NULL,
-        work_time VARCHAR(255) NULL,
+        work_time VARCHAR(200) NULL,
         latitude FLOAT NULL,
         longitude FLOAT NULL,
         image TEXT NULL,
@@ -64,7 +64,7 @@ class Database:
 
     async def add_company(self, name, address, landmark, work_time, phone_one, description):
         sql = ("INSERT INTO Company (name, address, landmark, work_time, phone_one, description) "
-               "VALUES($1, $2, $3. $4, $5, $6) returning *")
+               "VALUES($1, $2, $3, $4, $5, $6) returning *")
         return await self.execute(sql, name, address, landmark, work_time, phone_one, description, fetchrow=True)
 
     async def select_all_clinics(self):
@@ -75,8 +75,23 @@ class Database:
         sql = f"SELECT *, LOWER(name) FROM Company WHERE LOWER(name) LIKE '%{text}%'"
         return await self.execute(sql, fetch=True)
 
-    async def drop_table_ds_and_ss(self):
+    async def drop_table_company(self):
         await self.execute("DROP TABLE Company", execute=True)
+
+    async def create_table_category(self):
+        sql = """
+        CREATE TABLE IF NOT EXISTS Category (
+        id SERIAL PRIMARY KEY,        
+        created_at DATE DEFAULT CURRENT_DATE,
+        category VARCHAR(100) NULL,
+        link VARCHAR(255) NULL,
+        service VARCHAR(255) NULL,        
+        region VARCHAR(255) NULL,
+        city VARCHAR(255) NULL,
+        district VARCHAR(255) NULL        
+        );
+        """
+        await self.execute(sql, execute=True)
 
     # ============================= MUTAXASSISLIK VA HIZMATLAR JADVALI =============================
     async def create_table_doctors_and_services(self):
@@ -94,9 +109,17 @@ class Database:
         """
         await self.execute(sql, execute=True)
 
-    async def add_ds_and_ss(self, name, doctor, service):
-        sql = "INSERT INTO Doctors_Services (name, doctor, service) VALUES($1, $2, $3) returning *"
-        return await self.execute(sql, name, doctor, service, fetchrow=True)
+    async def add_ds_and_ss(self, name):
+        sql = "INSERT INTO Doctors_Services (name) VALUES($1) returning id"
+        return await self.execute(sql, name, fetchrow=True)
+
+    async def update_ds_doctor_by_id(self, doctor, id_):
+        sql = "UPDATE Doctors_Services SET doctor=$1 WHERE id=$2"
+        return await self.execute(sql, doctor, id_, execute=True)
+
+    async def update_ds_service_by_id(self, service, id_):
+        sql = "UPDATE Doctors_Services SET service=$1 WHERE id=$2"
+        return await self.execute(sql, service, id_, execute=True)
 
     async def drop_table_ds_and_ss(self):
         await self.execute("DROP TABLE Doctors_Services", execute=True)

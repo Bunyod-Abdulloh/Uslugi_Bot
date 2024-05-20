@@ -1,20 +1,15 @@
-from LxmlSoup import LxmlSoup
 import requests
+from LxmlSoup import LxmlSoup
 
-html = requests.get('https://sunlight.net/catalog').text  # получаем html код сайта
-soup = LxmlSoup(html)  # создаём экземпляр класса LxmlSoup
-print(f"{soup} BU SOUP")
+clinics = ['https://clinics.uz/uzb/catalog/medical-centers/big-pharm'
+           'https://clinics.uz/uzb/catalog/medical-centers/darmon-servis',
+           'a']
 
-links = soup.find_all('a', class_='cl-item-link js-cl-item-link js-cl-item-root-link')  # получаем список ссылок и наименований
-print(f"{links} BU LINKS")
+html_two = requests.get("https://clinics.uz/uzb/catalog/medical-centers").text
+soup_two = LxmlSoup(html_two)
 
-for i, link in enumerate(links):
-    url = link.get("href")  # получаем ссылку товара
-    name = link.text()  # извлекаем наименование из блока со ссылкой
-    price = soup.find_all("div", class_="cl-item-info-price-discount")[i].text()  # извлекаем цену
-    print(i)
-    print(f"Url - {url}")
-    print(f"Name - {name}")
-    print(f"Price - {price}\n")
-    break
+search_name = soup_two.find_all('div', id='subcats')
 
+for n in search_name:
+    for i in n.select('a'):
+        print(i.text())

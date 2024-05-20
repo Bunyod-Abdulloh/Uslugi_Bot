@@ -11,4 +11,5 @@ class UserSearchUz(StatesGroup):
     doctors = State()
     address = State()
     nearest_clinics = State()
+    add_data = State()
 

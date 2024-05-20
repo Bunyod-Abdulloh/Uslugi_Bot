@@ -40,6 +40,7 @@ async def database_connected():
     # await db.drop_users()
     # await db.drop_table_complaint()
     # await db.drop_table_ds_and_ss()
+    # await db.drop_table_company()
     await db.create_table_users()
     await db.create_table_complaint()
     await db.create_table_company()
